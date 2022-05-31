@@ -18,10 +18,26 @@ function App() {
     setShowForm((showForm) => !showForm);
   }
 
+  function handleForm(newToy) {
+    const config = {
+      method: 'POST',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(newToy)
+    }
+    fetch('http://localhost:3001/toys', config)
+      .then(r => r.json())
+      .then(toy => {
+        updateList([...toyList, toy])
+        setShowForm(!showForm)
+      })
+  }
+
   return (
     <>
       <Header />
-      {showForm ? <ToyForm /> : null}
+      {showForm ? <ToyForm onAddToy={handleForm} /> : null}
       <div className="buttonContainer">
         <button onClick={handleClick}>Add a Toy</button>
       </div>
